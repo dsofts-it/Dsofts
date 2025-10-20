@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Brand fonts */
+:root { --font-display: 'Sora', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+body { font-family: var(--font-display); }
+
+/* Smooth scroll */
+html { scroll-behavior: smooth; }
+
+/* Loader fallback */
+.loader { position: fixed; inset: 0; display: grid; place-items: center; background: white; z-index: 50; }
+.pulse { @apply text-3xl font-extrabold text-brand; animation: pulse 1.2s ease-in-out infinite; }
+@keyframes pulse { 0%,100%{ transform: scale(1); opacity:.8;} 50%{ transform: scale(1.04); opacity:1;}}
+
+/* Utility components for quick styling (maps old classes to Tailwind) */
+.btn { @apply px-4 py-2 rounded-xl bg-brand text-white font-semibold hover:opacity-90 transition border border-blue-600; }
+.btn.secondary { @apply bg-white text-slate-700 border border-slate-300; }
+.btn.link { @apply bg-transparent text-brand border-0; }
+.input, .textarea, .select { @apply w-full bg-white text-slate-800 placeholder-slate-400 rounded-xl border border-slate-300 px-4 py-2 outline-none focus:ring-4 ring-blue-300 focus:border-blue-500; }
+.card { @apply rounded-2xl border border-slate-200 bg-white p-5 shadow-sm; }
+.section-title { @apply text-2xl font-bold mb-3 text-slate-800; }
