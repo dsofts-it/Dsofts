@@ -1,9 +1,22 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../context/AuthContext.jsx';
+import { useNavigate } from 'react-router-dom';
 import { FcGoogle } from 'react-icons/fc';
+
+// Derive the server origin robustly from VITE_API_URL (consistent with Login page)
+let API_ORIGIN = 'http://localhost:5000';
+try {
+  if (import.meta.env.VITE_API_URL) {
+    API_ORIGIN = new URL(import.meta.env.VITE_API_URL).origin;
+  }
+} catch {
+  const raw = String(import.meta.env.VITE_API_URL || '').replace(/\/$/, '');
+  API_ORIGIN = raw.endsWith('/api') ? raw.slice(0, -4) : (raw || API_ORIGIN);
+}
 
 export default function Register() {
   const { register } = useAuth();
+  const navigate = useNavigate();
   const [form, setForm] = useState({ name: '', email: '', password: '', confirmPassword: '' });
   const [error, setError] = useState('');
 
@@ -12,6 +25,7 @@ export default function Register() {
     setError('');
     try {
       await register(form);
+      navigate('/profile');
     } catch (err) {
       setError(err.response?.data?.message || 'Registration failed');
     }
@@ -30,7 +44,7 @@ export default function Register() {
           <button className="btn w-full py-3" type="submit">Register</button>
         </form>
         <div className="mt-3" />
-        <a href={`${import.meta.env.VITE_API_URL?.replace('/api','') || 'http://localhost:5000'}/api/auth/google`} className="btn secondary w-full flex items-center justify-center gap-2 py-3"><FcGoogle size={18}/> Continue with Google</a>
+        <a href={`${API_ORIGIN}/api/auth/google`} className="btn secondary w-full flex items-center justify-center gap-2 py-3"><FcGoogle size={18}/> Continue with Google</a>
         <div className="mt-4 text-sm flex items-center justify-between">
           <a className="text-brand" href="/forgot-password">Forgot password?</a>
           <a className="text-brand" href="/login">Sign in</a>

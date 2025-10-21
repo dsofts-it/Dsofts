@@ -16,16 +16,37 @@ import metricsRoutes from './routes/metrics.routes.js';
 
 const app = express();
 
-const CLIENT_URL = process.env.CLIENT_URL || 'http://localhost:5173';
+// Support multiple frontend origins (comma-separated) and common localhost variants
+// Examples:
+//  - CLIENT_URL="http://localhost:5173"
+//  - CLIENT_URL="https://app.example.com, https://www.example.com"
+const rawClientUrls = process.env.CLIENT_URL || 'http://localhost:5173';
+const ALLOWED_ORIGINS = rawClientUrls
+  .split(',')
+  .map((s) => s.trim())
+  .filter(Boolean);
 
 app.use(helmet());
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.set('trust proxy', 1);
 app.use(passport.initialize());
 app.use(
-  cors({ origin: CLIENT_URL, credentials: true })
+  cors({
+    origin: (origin, callback) => {
+      // Allow non-browser requests or same-origin
+      if (!origin) return callback(null, true);
+      // Check against explicit allowlist
+      if (ALLOWED_ORIGINS.includes(origin)) return callback(null, true);
+      // Allow common local development hosts/ports
+      const isLocalhost = /^(https?:\/\/)?(localhost|127\.0\.0\.1)(:\\d+)?$/i.test(origin);
+      if (isLocalhost) return callback(null, true);
+      return callback(new Error('Not allowed by CORS: ' + origin));
+    },
+    credentials: true,
+  })
 );
 
 const limiter = rateLimit({ windowMs: 60 * 1000, max: 200 });

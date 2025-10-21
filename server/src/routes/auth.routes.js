@@ -8,7 +8,10 @@ import { setJwtCookie, requireAuth } from '../middleware/auth.js';
 import { sendResetEmail } from '../utils/email.js';
 
 const router = express.Router();
-const CLIENT_URL = process.env.CLIENT_URL || 'http://localhost:5173';
+// Support multiple comma-separated client origins; use the first for redirects
+const rawClientUrls = process.env.CLIENT_URL || 'http://localhost:5173';
+const CLIENT_URLS = rawClientUrls.split(',').map((s) => s.trim()).filter(Boolean);
+const CLIENT_URL = CLIENT_URLS[0] || 'http://localhost:5173';
 
 // Register
 router.post('/register', async (req, res) => {
