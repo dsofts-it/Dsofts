@@ -13,24 +13,31 @@ export default function Profile() {
     const { data } = await api.put('/auth/profile', form);
     setUser(data.user);
     setMsg('Profile updated');
-    setTimeout(()=>setMsg(''), 1000);
+    setTimeout(() => setMsg(''), 1000);
   };
 
   return (
-    <div>
-      <h2 className="section-title">My Profile</h2>
-      <div className="card" style={{maxWidth:560}}>
-        <form onSubmit={submit}>
-          <input className="input" placeholder="Your name" value={form.name} onChange={e=>setForm({...form,name:e.target.value})} />
-          <div className="spacer"></div>
-          <input className="input" placeholder="Avatar URL (optional)" value={form.avatar} onChange={e=>setForm({...form,avatar:e.target.value})} />
-          <div className="spacer"></div>
-          {msg && <div className="muted">{msg}</div>}
+    <div className="grid md:grid-cols-3 gap-6">
+      <div className="md:col-span-2 rounded-2xl border border-slate-200 bg-white p-6">
+        <h2 className="text-2xl font-extrabold text-slate-900">My Profile</h2>
+        <form onSubmit={submit} className="mt-4">
+          <input className="input" placeholder="Your name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
+          <div className="h-3" />
+          <input className="input" placeholder="Avatar URL (optional)" value={form.avatar} onChange={(e) => setForm({ ...form, avatar: e.target.value })} />
+          <div className="h-3" />
+          {msg && <div className="text-green-700">{msg}</div>}
+          <div className="h-3" />
           <button className="btn" type="submit">Save</button>
         </form>
       </div>
-      <div className="spacer" />
-      <Link className="btn" to="/payments/history">View Payment History</Link>
+      <div className="rounded-2xl border border-slate-200 bg-white p-6">
+        <div className="font-semibold text-slate-900">Quick actions</div>
+        <div className="mt-3 flex flex-col gap-2">
+          <Link className="btn secondary" to="/payments/history">View Payment History</Link>
+          <Link className="btn secondary" to="/project-builder">Build a Project</Link>
+        </div>
+      </div>
     </div>
   );
 }
+

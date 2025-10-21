@@ -9,14 +9,15 @@ export default function Home() {
     <PageTransition>
       {/* Hero (light) */}
       <section className="pt-10 md:pt-16">
-        <div className="rounded-3xl border border-slate-200 bg-white p-8 md:p-12 shadow-sm">
+        <div className="relative rounded-3xl border border-slate-200 bg-white p-8 md:p-12 shadow-sm overflow-hidden">
+          <div className="absolute -right-24 -top-24 w-80 h-80 rounded-full bg-gradient-to-br from-brand/10 to-brandLight/20 blur-3xl" />
           <div className="flex items-center gap-2 text-blue-600 font-semibold text-sm mb-2">
             <span className="inline-block w-2 h-2 rounded-full bg-blue-600"></span> Dsofts IT Services
           </div>
           <h1 className="text-3xl md:text-5xl font-extrabold leading-tight text-slate-900">We craft modern apps that grow your business.</h1>
-          <p className="text-slate-600 mt-3 max-w-3xl">Websites, Android apps, MLM/referral systems and outsourcing — delivered fast, secure and payment‑ready. Built on battle‑tested tech.</p>
+          <p className="text-slate-600 mt-3 max-w-3xl">Websites, Android apps, MLM/referral systems and outsourcing — delivered fast, secure and payment-ready. Built on battle-tested tech.</p>
           <div className="mt-6 flex flex-wrap gap-3">
-            <Link to="/login" className="px-5 py-3 rounded-xl bg-brand text-white hover:opacity-90 transition inline-flex items-center gap-2">Get Quote <FiArrowRight/></Link>
+            <Link to="/login" className="px-5 py-3 rounded-xl bg-gradient-to-r from-brand to-brandLight text-white shadow-sm hover:opacity-95 transition inline-flex items-center gap-2">Get Quote <FiArrowRight/></Link>
             <a href="https://wa.me/919000000000" target="_blank" rel="noreferrer" className="px-5 py-3 rounded-xl bg-blue-50 text-slate-800 border border-slate-200 hover:bg-blue-100 transition">WhatsApp</a>
           </div>
         </div>
@@ -26,7 +27,12 @@ export default function Home() {
       <section className="mt-10">
         <h2 className="text-xl md:text-2xl font-bold mb-3 text-slate-900">What we build</h2>
         <div className="grid md:grid-cols-4 gap-4">
-          {[{i:<FiCode/>,t:'Web Development',d:'Landing pages, dashboards, portals'}, {i:<FiSmartphone/>,t:'Android Apps',d:'Native/hybrid apps with offline'}, {i:<FiLayers/>,t:'Referral/MLM',d:'Plans, wallet, payouts'}, {i:<FiZap/>,t:'Outsourcing',d:'We deliver for your clients'}].map((s,idx)=> (
+          {[
+            {i:<FiCode/>,t:'Web Development',d:'Landing pages, dashboards, portals'},
+            {i:<FiSmartphone/>,t:'Android Apps',d:'Native/hybrid apps with offline'},
+            {i:<FiLayers/>,t:'Referral/MLM',d:'Plans, wallet, payouts'},
+            {i:<FiZap/>,t:'Outsourcing',d:'We deliver for your clients'}
+          ].map((s,idx)=> (
             <div key={idx} className="rounded-2xl border border-slate-200 bg-white p-5 hover:border-blue-400 transition">
               <div className="text-blue-600 text-2xl">{s.i}</div>
               <div className="font-semibold mt-2 text-slate-900">{s.t}</div>
@@ -89,7 +95,7 @@ export default function Home() {
       {/* Client logos */}
       <section className="mt-10">
         <div className="rounded-2xl border border-slate-200 bg-white p-5 flex flex-wrap items-center justify-between gap-4">
-          {['Fintech','Retail','Real‑Estate','Education','Healthcare','SaaS'].map((t,i)=> (
+          {['Fintech','Retail','Real Estate','Education','Healthcare','SaaS'].map((t,i)=> (
             <div key={i} className="text-slate-500">{t}</div>
           ))}
         </div>
@@ -111,3 +117,4 @@ export default function Home() {
     </PageTransition>
   );
 }
+

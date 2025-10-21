@@ -18,40 +18,44 @@ import { AuthProvider, useAuth } from './context/AuthContext.jsx';
 import AdminApp from './admin/AdminApp.jsx';
 import Loader from './components/Loader.jsx';
 import PageTransition from './components/PageTransition.jsx';
+import ThemeToggle from './components/ThemeToggle.jsx';
 
 const Layout = ({ children }) => {
   const { user, logout } = useAuth();
   const location = useLocation();
   return (
-    <div className="min-h-screen bg-white text-slate-800">
-      <nav className="sticky top-0 z-20 border-b border-slate-200 bg-white/90 backdrop-blur">
+    <div className="min-h-screen bg-gradient-to-b from-white to-blue-50/30 text-slate-800">
+      <nav className="sticky top-0 z-30 border-b border-slate-200/70 bg-white/80 backdrop-blur-xl">
         <div className="max-w-[1160px] mx-auto px-6 py-3 flex items-center justify-between">
           <div className="flex items-center gap-2 font-bold">
             <img src="/dsofts-logo.png" alt="Dsofts IT" className="h-7" onError={(e)=>{e.currentTarget.style.display='none'}} />
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-brand to-brandLight grid place-items-center text-white font-black">D</div>
-            <Link to="/">Dsofts IT Services</Link>
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-brand to-brandLight grid place-items-center text-white font-black shadow-sm">D</div>
+            <Link to="/" className="hover:text-blue-700 transition">Dsofts IT Services</Link>
           </div>
-          <div className="hidden md:flex items-center gap-4">
-            <Link to="/services" className="hover:text-blue-600 transition">Services</Link>
-            <Link to="/clients" className="hover:text-blue-600 transition">Happy Clients</Link>
-            <Link to="/project-builder" className="hover:text-blue-600 transition">Project Builder</Link>
-            <Link to="/about" className="hover:text-blue-600 transition">About</Link>
-            <Link to="/contact" className="hover:text-blue-600 transition">Contact</Link>
-            <Link to="/pay" className="hover:text-blue-600 transition">Pay</Link>
+          <div className="hidden md:flex items-center gap-3">
+            <Link to="/services" className="px-3 py-2 rounded-lg hover:bg-blue-50 text-slate-700 hover:text-blue-700 transition">Services</Link>
+            <Link to="/clients" className="px-3 py-2 rounded-lg hover:bg-blue-50 text-slate-700 hover:text-blue-700 transition">Happy Clients</Link>
+            <Link to="/project-builder" className="px-3 py-2 rounded-lg hover:bg-blue-50 text-slate-700 hover:text-blue-700 transition">Project Builder</Link>
+            <Link to="/about" className="px-3 py-2 rounded-lg hover:bg-blue-50 text-slate-700 hover:text-blue-700 transition">About</Link>
+            <Link to="/contact" className="px-3 py-2 rounded-lg hover:bg-blue-50 text-slate-700 hover:text-blue-700 transition">Contact</Link>
+            <Link to="/pay" className="px-3 py-2 rounded-lg hover:bg-blue-50 text-slate-700 hover:text-blue-700 transition">Pay</Link>
             <Link to="/admin" className="px-3 py-1.5 rounded-lg border border-slate-200 hover:border-blue-500 hover:text-blue-600 transition">Admin</Link>
+            <ThemeToggle />
             {user ? (
               <>
-                <Link to="/profile" className="hover:text-blue-600 transition">Hi, {user.name.split(' ')[0]}</Link>
-                <button className="px-3 py-1.5 rounded-lg border border-slate-200 hover:border-blue-500 transition" onClick={logout}>Logout</button>
+                <Link to="/profile" className="px-3 py-2 rounded-lg hover:bg-blue-50 transition">Hi, {user.name.split(' ')[0]}</Link>
+                <button className="px-3 py-2 rounded-lg border border-slate-200 hover:border-blue-500 transition" onClick={logout}>Logout</button>
               </>
             ) : (
-              location.pathname !== '/login' && <Link className="px-3 py-1.5 rounded-lg bg-brand text-white hover:opacity-90 transition" to="/login">Login</Link>
+              location.pathname !== '/login' && (
+                <Link className="px-4 py-2 rounded-xl bg-gradient-to-r from-brand to-brandLight text-white shadow-sm hover:opacity-95 transition" to="/login">Login</Link>
+              )
             )}
           </div>
         </div>
       </nav>
       <div className="max-w-[1160px] mx-auto px-6 py-6"><PageTransition>{children}</PageTransition></div>
-      <footer className="border-t border-slate-200 text-center text-slate-500 py-6">© {new Date().getFullYear()} Dsofts IT — Warje, Pune • +91 90000 00000</footer>
+      <footer className="border-t border-slate-200 text-center text-slate-500 py-6">© {new Date().getFullYear()} Dsofts IT • Warje, Pune • +91 90000 00000</footer>
     </div>
   );
 };
@@ -112,3 +116,4 @@ export default function App() {
     </AuthProvider>
   );
 }
+

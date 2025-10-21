@@ -8,12 +8,18 @@ import AdminInquiries from './AdminInquiries.jsx';
 import AdminPayments from './AdminPayments.jsx';
 
 const AdminNav = () => (
-  <div className="row" style={{gap:10, flexWrap:'wrap'}}>
-    <Link to="/admin">Dashboard</Link>
-    <Link to="/admin/services">Services</Link>
-    <Link to="/admin/users">Users</Link>
-    <Link to="/admin/inquiries">Inquiries</Link>
-    <Link to="/admin/payments">Payments</Link>
+  <div className="flex flex-wrap gap-2">
+    {[
+      { to: '/admin', label: 'Dashboard' },
+      { to: '/admin/services', label: 'Services' },
+      { to: '/admin/users', label: 'Users' },
+      { to: '/admin/inquiries', label: 'Inquiries' },
+      { to: '/admin/payments', label: 'Payments' },
+    ].map((i) => (
+      <Link key={i.to} to={i.to} className="px-3 py-1.5 rounded-lg border border-slate-200 hover:bg-blue-50 transition">
+        {i.label}
+      </Link>
+    ))}
   </div>
 );
 
@@ -23,8 +29,8 @@ export default function AdminApp(){
   if (user.role !== 'admin') return <div className="card">You need admin access.</div>;
   return (
     <div>
-      <div className="row" style={{justifyContent:'space-between', margin:'10px 0'}}>
-        <h2>Admin</h2>
+      <div className="flex items-center justify-between my-3">
+        <h2 className="text-2xl font-extrabold text-slate-900">Admin</h2>
         <AdminNav />
       </div>
       <Routes>
@@ -37,4 +43,3 @@ export default function AdminApp(){
     </div>
   );
 }
-
