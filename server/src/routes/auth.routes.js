@@ -70,12 +70,18 @@ router.put('/profile', requireAuth, async (req, res) => {
   res.json({ user });
 });
 
-// Google OAuth
-router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+// Google OAuth (stateless: no server sessions)
+router.get(
+  '/google',
+  passport.authenticate('google', { scope: ['profile', 'email'], session: false })
+);
 
 router.get(
   '/google/callback',
-  passport.authenticate('google', { failureRedirect: `${CLIENT_URL}/login?error=google` }),
+  passport.authenticate('google', {
+    failureRedirect: `${CLIENT_URL}/login?error=google`,
+    session: false,
+  }),
   async (req, res) => {
     // Passport exposes user on req.user
     const user = req.user;
