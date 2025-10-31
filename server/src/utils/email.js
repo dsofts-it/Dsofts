@@ -17,8 +17,8 @@ export const sendResetEmail = async ({ to, name, resetLink }) => {
       <p>Hi ${name || 'there'},</p>
       <p>We received a request to reset your password for your Dsofts account.</p>
       <p><a href="${resetLink}">Click here to reset your password</a>. This link will expire in 30 minutes.</p>
-      <p>If you didn’t request a password reset, you can ignore this email.</p>
-      <p>— Dsofts IT</p>
+      <p>If you didn't request a password reset, you can ignore this email.</p>
+      <p>&mdash; Dsofts IT</p>
     </div>`;
 
   await transporter.sendMail({

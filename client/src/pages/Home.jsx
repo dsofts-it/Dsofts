@@ -18,6 +18,7 @@ export default function Home() {
           <p className="text-slate-600 mt-3 max-w-3xl">Websites, Android apps, MLM/referral systems and outsourcing — delivered fast, secure and payment-ready. Built on battle-tested tech.</p>
           <div className="mt-6 flex flex-wrap gap-3">
             <Link to="/login" className="px-5 py-3 rounded-xl bg-gradient-to-r from-brand to-brandLight text-white shadow-sm hover:opacity-95 transition inline-flex items-center gap-2">Get Quote <FiArrowRight/></Link>
+            <Link to="/register" className="px-5 py-3 rounded-xl bg-blue-600 text-white hover:bg-blue-700 transition">Register</Link>
             <a href="https://wa.me/919000000000" target="_blank" rel="noreferrer" className="px-5 py-3 rounded-xl bg-blue-50 text-slate-800 border border-slate-200 hover:bg-blue-100 transition">WhatsApp</a>
           </div>
         </div>
@@ -106,11 +107,12 @@ export default function Home() {
         <div className="rounded-3xl border border-slate-200 bg-gradient-to-r from-blue-50 to-white p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-4">
           <div>
             <div className="text-xl font-bold text-slate-900">Ready to start?</div>
-            <div className="text-slate-600">Tell us about your project. We’ll reply within 24h.</div>
+            <div className="text-slate-600">Tell us about your project. We'll reply within 24h.</div>
           </div>
           <div className="flex gap-3">
             <a href="https://wa.me/919000000000" target="_blank" rel="noreferrer" className="px-5 py-3 rounded-xl bg-white border border-slate-200 text-slate-800 hover:bg-blue-50 transition">WhatsApp</a>
             <Link to="/login" className="px-5 py-3 rounded-xl bg-brand text-white hover:opacity-90 transition">Get Quote</Link>
+            <Link to="/register" className="px-5 py-3 rounded-xl bg-blue-600 text-white hover:bg-blue-700 transition">Register</Link>
           </div>
         </div>
       </section>

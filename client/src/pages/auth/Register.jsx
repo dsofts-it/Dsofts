@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../context/AuthContext.jsx';
 import { useNavigate } from 'react-router-dom';
-import { FcGoogle } from 'react-icons/fc';
 import AuthLayout from '../../components/AuthLayout.jsx';
 
 // Derive the server origin robustly from VITE_API_URL (consistent with Login page)
@@ -42,8 +41,6 @@ export default function Register() {
         {error && <div className="text-red-400 text-sm">{error}</div>}
         <button className="btn w-full py-3" type="submit">Register</button>
       </form>
-      <div className="mt-3" />
-      <a href={`${API_ORIGIN}/api/auth/google`} className="btn secondary w-full flex items-center justify-center gap-2 py-3"><FcGoogle size={18}/> Continue with Google</a>
       <div className="mt-4 text-sm flex items-center justify-between text-slate-300">
         <a className="text-brand" href="/forgot-password">Forgot password?</a>
         <a className="text-brand" href="/login">Sign in</a>

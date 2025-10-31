@@ -33,9 +33,9 @@ export default function About() {
         <div className="rounded-2xl border border-slate-200 bg-gradient-to-br from-blue-50 to-white p-6">
           <div className="text-sm font-semibold text-blue-700">Our Process</div>
           <div className="mt-3 space-y-3">
-            {['Discovery & Estimation','Design & Architecture','Build & Iterate','Launch & Support'].map((step,i) => (
+            {['Discovery & Estimation', 'Design & Architecture', 'Build & Iterate', 'Launch & Support'].map((step, i) => (
               <div key={i} className="flex items-center gap-3">
-                <div className="h-8 w-8 rounded-full bg-blue-100 text-blue-700 grid place-items-center font-bold">{i+1}</div>
+                <div className="h-8 w-8 rounded-full bg-blue-100 text-blue-700 grid place-items-center font-bold">{i + 1}</div>
                 <div className="font-medium text-slate-800">{step}</div>
               </div>
             ))}

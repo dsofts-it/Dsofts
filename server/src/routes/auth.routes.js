@@ -37,10 +37,11 @@ router.post('/register', async (req, res) => {
 // Login by name or email
 router.post('/login', async (req, res) => {
   try {
-    const { identifier, password } = req.body; // identifier can be name or email
-    if (!identifier || !password) return res.status(400).json({ message: 'Missing fields' });
+    const { identifier, email, password } = req.body; // prefer email, keep identifier for backward compatibility
+    const loginId = (email || identifier || '').trim();
+    if (!loginId || !password) return res.status(400).json({ message: 'Missing fields' });
 
-    const query = identifier.includes('@') ? { email: identifier.toLowerCase() } : { name: identifier };
+    const query = loginId.includes('@') ? { email: loginId.toLowerCase() } : { name: loginId };
     const user = await User.findOne(query);
     if (!user || !(await user.comparePassword(password))) {
       return res.status(401).json({ message: 'Invalid credentials' });

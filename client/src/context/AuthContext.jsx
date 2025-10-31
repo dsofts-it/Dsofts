@@ -19,7 +19,8 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = async (identifier, password) => {
-    const { data } = await api.post('/auth/login', { identifier, password });
+    // Send as email-only to match simple login (backend also accepts identifier for compatibility)
+    const { data } = await api.post('/auth/login', { email: identifier, password });
     setUser(data.user);
   };
 

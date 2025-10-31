@@ -13,7 +13,7 @@ export default function ForgotPassword() {
   };
 
   return (
-    <AuthLayout title="Forgot password" subtitle="We’ll send a link to your email">
+    <AuthLayout title="Forgot password" subtitle="We'll send a link to your email">
       {sent ? (
         <p className="muted">If an account exists, a reset link has been sent.</p>
       ) : (
@@ -26,3 +26,4 @@ export default function ForgotPassword() {
     </AuthLayout>
   );
 }
+

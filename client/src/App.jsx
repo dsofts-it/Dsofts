@@ -19,6 +19,7 @@ import AdminApp from './admin/AdminApp.jsx';
 import Loader from './components/Loader.jsx';
 import PageTransition from './components/PageTransition.jsx';
 import ThemeToggle from './components/ThemeToggle.jsx';
+import logo from './assets/dsofts-logo.jpg';
 
 const Layout = ({ children }) => {
   const { user, logout } = useAuth();
@@ -28,7 +29,7 @@ const Layout = ({ children }) => {
       <nav className="sticky top-0 z-30 border-b border-slate-200/70 bg-white/80 backdrop-blur-xl">
         <div className="max-w-[1160px] mx-auto px-6 py-3 flex items-center justify-between">
           <div className="flex items-center gap-2 font-bold">
-            <img src="/dsofts-logo.png" alt="Dsofts IT" className="h-7" onError={(e)=>{e.currentTarget.style.display='none'}} />
+            <img src={logo} alt="Dsofts IT" className="h-7" onError={(e)=>{e.currentTarget.style.display='none'}} />
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-brand to-brandLight grid place-items-center text-white font-black shadow-sm">D</div>
             <Link to="/" className="hover:text-blue-700 transition">Dsofts IT Services</Link>
           </div>
@@ -47,9 +48,14 @@ const Layout = ({ children }) => {
                 <button className="px-3 py-2 rounded-lg border border-slate-200 hover:border-blue-500 transition" onClick={logout}>Logout</button>
               </>
             ) : (
-              location.pathname !== '/login' && (
-                <Link className="px-4 py-2 rounded-xl bg-gradient-to-r from-brand to-brandLight text-white shadow-sm hover:opacity-95 transition" to="/login">Login</Link>
-              )
+              <div className="flex items-center gap-2">
+                {location.pathname !== '/login' && (
+                  <Link className="px-4 py-2 rounded-xl bg-gradient-to-r from-brand to-brandLight text-white shadow-sm hover:opacity-95 transition" to="/login">Login</Link>
+                )}
+                {location.pathname !== '/register' && (
+                  <Link className="px-4 py-2 rounded-xl bg-blue-600 text-white hover:bg-blue-700 transition" to="/register">Register</Link>
+                )}
+              </div>
             )}
           </div>
         </div>
