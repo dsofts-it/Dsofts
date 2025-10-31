@@ -38,6 +38,7 @@ Set these Environment Variables under Settings > Environment:
 - MONGO_URI=your_atlas_connection_string
 - JWT_SECRET=long_random_string
 - CLIENT_URL=https://dsofts-client.onrender.com, https://dsofts-admin.onrender.com, http://localhost:5173, http://localhost:5174
+- Optional: CORS_PUBLIC=true (default). When true, the API reflects any Origin and allows cookies. If you want to restrict to specific sites, set CORS_PUBLIC=false and keep CLIENT_URL as a comma-separated allowlist.
 - GOOGLE_CLIENT_ID=... (optional)
 - GOOGLE_CLIENT_SECRET=... (optional)
 - GOOGLE_CALLBACK_URL=https://dsofts-server.onrender.com/api/auth/google/callback

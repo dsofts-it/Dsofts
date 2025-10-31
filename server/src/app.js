@@ -16,15 +16,12 @@ import metricsRoutes from './routes/metrics.routes.js';
 
 const app = express();
 
-// Support multiple frontend origins (comma-separated) and common localhost variants
-// Examples:
-//  - CLIENT_URL="http://localhost:5173"
-//  - CLIENT_URL="https://app.example.com, https://www.example.com"
+// CORS configuration
+// If CORS_PUBLIC is true (default), reflect any Origin and allow credentials.
+// Otherwise, use an allowlist from CLIENT_URL (comma-separated) plus localhost.
+const PUBLIC_CORS = (process.env.CORS_PUBLIC ?? 'true') === 'true';
 const rawClientUrls = process.env.CLIENT_URL || 'http://localhost:5173';
-const ALLOWED_ORIGINS = rawClientUrls
-  .split(',')
-  .map((s) => s.trim())
-  .filter(Boolean);
+const ALLOWED_ORIGINS = rawClientUrls.split(',').map((s) => s.trim()).filter(Boolean);
 
 app.use(helmet());
 app.use(morgan('dev'));
@@ -35,16 +32,15 @@ app.set('trust proxy', 1);
 app.use(passport.initialize());
 app.use(
   cors({
-    origin: (origin, callback) => {
-      // Allow non-browser requests or same-origin
-      if (!origin) return callback(null, true);
-      // Check against explicit allowlist
-      if (ALLOWED_ORIGINS.includes(origin)) return callback(null, true);
-      // Allow common local development hosts/ports
-      const isLocalhost = /^(https?:\/\/)?(localhost|127\.0\.0\.1)(:\\d+)?$/i.test(origin);
-      if (isLocalhost) return callback(null, true);
-      return callback(new Error('Not allowed by CORS: ' + origin));
-    },
+    origin: PUBLIC_CORS
+      ? true // reflect request origin in Access-Control-Allow-Origin
+      : (origin, callback) => {
+          if (!origin) return callback(null, true);
+          if (ALLOWED_ORIGINS.includes(origin)) return callback(null, true);
+          const isLocalhost = /^(https?:\/\/)?(localhost|127\.0\.0\.1)(:\\d+)?$/i.test(origin);
+          if (isLocalhost) return callback(null, true);
+          return callback(new Error('Not allowed by CORS: ' + origin));
+        },
     credentials: true,
   })
 );
