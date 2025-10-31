@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.btn { @apply px-4 py-2 rounded-xl bg-brand text-white hover:opacity-90 transition; }
+.btn.secondary { @apply bg-white text-slate-800 border border-slate-200 hover:bg-blue-50; }
+.input { @apply w-full rounded-lg border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand; }
+.card { @apply rounded-2xl border border-slate-200 bg-white p-6; }
+

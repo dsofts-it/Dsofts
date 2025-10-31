@@ -2,9 +2,10 @@ Deploying to Render (server + frontend)
 
 Overview
 
-You will deploy two services from your GitHub repo:
+You will deploy three services from your GitHub repo:
 - Backend (Node/Express) at https://dsofts-server.onrender.com
 - Frontend (Vite static site) at https://dsofts-client.onrender.com
+- Admin (Vite static site) at https://dsofts-admin.onrender.com
 
 This repo already includes render.yaml which lets Render set up both with one click. Alternatively you can create them manually in the dashboard.
 
@@ -22,9 +23,10 @@ Prerequisites
 2) Deploy using Blueprint (render.yaml)
 
 - In Render: New > Blueprint > Select your repo.
-- Confirm services from render.yaml:
+- Confirm services from render.yaml (or create manually):
   - dsofts-server (type: web, Node)
   - dsofts-client (type: static_site)
+  - dsofts-admin (type: static_site)
 - Click Apply. Render will create both services but they will fail until you set env vars.
 
 3) Configure backend environment (dsofts-server)
@@ -35,7 +37,7 @@ Set these Environment Variables under Settings > Environment:
 - PORT=10000 (Render sets automatically, you can omit)
 - MONGO_URI=your_atlas_connection_string
 - JWT_SECRET=long_random_string
-- CLIENT_URL=https://dsofts-client.onrender.com, http://localhost:5173
+- CLIENT_URL=https://dsofts-client.onrender.com, https://dsofts-admin.onrender.com, http://localhost:5173, http://localhost:5174
 - GOOGLE_CLIENT_ID=... (optional)
 - GOOGLE_CLIENT_SECRET=... (optional)
 - GOOGLE_CALLBACK_URL=https://dsofts-server.onrender.com/api/auth/google/callback
@@ -58,14 +60,25 @@ Notes
 
 5) Configure frontend environment (dsofts-client)
 
-- Set VITE_API_URL=https://<server-domain>/api
+ - Set VITE_API_URL=https://<server-domain>/api
   Example: https://dsofts-server.onrender.com/api
+
+5b) Configure admin frontend (dsofts-admin)
+
+- Build command: cd admin && npm install && npm run build
+- Publish directory: admin/dist
+- Env: VITE_API_URL=https://<server-domain>/api
 
 6) Deploy the frontend
 
 - Click Manual Deploy on dsofts-client.
 - The static site build uses Vite and publishes client/dist.
 - SPA routes are enabled (/* -> /index.html) so deep links work.
+
+6b) Deploy the admin frontend
+
+- Manual Deploy on dsofts-admin.
+- The static site build publishes admin/dist with the same SPA rewrite.
 
 7) Test end‑to‑end
 

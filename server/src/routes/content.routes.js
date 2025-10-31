@@ -40,4 +40,18 @@ router.get('/clients', async (_req, res) => {
   res.json({ clients });
 });
 
+// Admin manage clients (create/update/delete)
+router.post('/clients', requireAdmin, async (req, res) => {
+  const c = await Client.create(req.body);
+  res.status(201).json({ client: c });
+});
+router.put('/clients/:id', requireAdmin, async (req, res) => {
+  const c = await Client.findByIdAndUpdate(req.params.id, { $set: req.body }, { new: true });
+  res.json({ client: c });
+});
+router.delete('/clients/:id', requireAdmin, async (req, res) => {
+  await Client.findByIdAndDelete(req.params.id);
+  res.json({ ok: true });
+});
+
 export default router;

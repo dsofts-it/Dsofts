@@ -15,7 +15,6 @@ import Payment from './pages/Payment.jsx';
 import PaymentResult from './pages/PaymentResult.jsx';
 import PaymentsHistory from './pages/PaymentsHistory.jsx';
 import { AuthProvider, useAuth } from './context/AuthContext.jsx';
-import AdminApp from './admin/AdminApp.jsx';
 import Loader from './components/Loader.jsx';
 import PageTransition from './components/PageTransition.jsx';
 import ThemeToggle from './components/ThemeToggle.jsx';
@@ -40,7 +39,7 @@ const Layout = ({ children }) => {
             <Link to="/about" className="px-3 py-2 rounded-lg hover:bg-blue-50 text-slate-700 hover:text-blue-700 transition">About</Link>
             <Link to="/contact" className="px-3 py-2 rounded-lg hover:bg-blue-50 text-slate-700 hover:text-blue-700 transition">Contact</Link>
             <Link to="/pay" className="px-3 py-2 rounded-lg hover:bg-blue-50 text-slate-700 hover:text-blue-700 transition">Pay</Link>
-            <Link to="/admin" className="px-3 py-1.5 rounded-lg border border-slate-200 hover:border-blue-500 hover:text-blue-600 transition">Admin</Link>
+            {/* Admin moved to a separate site; link removed */}
             <ThemeToggle />
             {user ? (
               <>
@@ -99,17 +98,17 @@ export default function App() {
             {/* Public homepage */}
             <Route path="/" element={<Home />} />
 
-            {/* Everything else requires login */}
-            <Route path="/services" element={<Protected><Services /></Protected>} />
-            <Route path="/clients" element={<Protected><Clients /></Protected>} />
-            <Route path="/about" element={<Protected><About /></Protected>} />
-            <Route path="/contact" element={<Protected><Contact /></Protected>} />
-            <Route path="/project-builder" element={<Protected><ProjectBuilder /></Protected>} />
+            {/* Make public pages freely accessible */}
+            <Route path="/services" element={<Services />} />
+            <Route path="/clients" element={<Clients />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/project-builder" element={<ProjectBuilder />} />
             <Route path="/pay" element={<Protected><Payment /></Protected>} />
             <Route path="/payment-result" element={<Protected><PaymentResult /></Protected>} />
             <Route path="/profile" element={<Protected><Profile /></Protected>} />
             <Route path="/payments/history" element={<Protected><PaymentsHistory /></Protected>} />
-            <Route path="/admin/*" element={<Protected><AdminApp /></Protected>} />
+            {/* Admin moved to separate app; route removed */}
 
             {/* Auth routes remain open */}
             <Route path="/login" element={<Login />} />

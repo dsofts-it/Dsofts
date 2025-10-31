@@ -1,4 +1,6 @@
 import React, { useMemo, useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext.jsx';
 import api from '../lib/axios.js';
 import PageTransition from '../components/PageTransition.jsx';
 
@@ -37,6 +39,9 @@ const presets = {
 };
 
 export default function ProjectBuilder() {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
   const [type, setType] = useState('website');
   const [selection, setSelection] = useState({});
   const [features, setFeatures] = useState([]);
@@ -63,6 +68,12 @@ export default function ProjectBuilder() {
       estimatedPrice: price,
       ...contact,
     };
+    // Require login only at submission time
+    if (!user) {
+      const params = new URLSearchParams({ next: location.pathname });
+      navigate(`/login?${params.toString()}`);
+      return;
+    }
     try {
       await api.post('/inquiries', payload);
       alert('Thanks! We will contact you with a quote.');

@@ -28,8 +28,10 @@ export default function Login() {
     setError('');
     try {
       await login(identifier, password);
-      const isAdminIntent = new URLSearchParams(location.search).get('admin') === '1';
-      navigate(isAdminIntent ? '/admin' : '/profile');
+      const sp = new URLSearchParams(location.search);
+      const next = sp.get('next');
+      const isAdminIntent = sp.get('admin') === '1';
+      navigate(next || (isAdminIntent ? '/profile' : '/profile'));
     } catch (err) {
       setError(err.response?.data?.message || 'Login failed');
     }
