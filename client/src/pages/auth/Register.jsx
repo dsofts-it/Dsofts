@@ -1,18 +1,7 @@
 import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext.jsx';
-import { useNavigate } from 'react-router-dom';
 import AuthLayout from '../../components/AuthLayout.jsx';
-
-// Derive the server origin robustly from VITE_API_URL (consistent with Login page)
-let API_ORIGIN = 'http://localhost:5000';
-try {
-  if (import.meta.env.VITE_API_URL) {
-    API_ORIGIN = new URL(import.meta.env.VITE_API_URL).origin;
-  }
-} catch {
-  const raw = String(import.meta.env.VITE_API_URL || '').replace(/\/$/, '');
-  API_ORIGIN = raw.endsWith('/api') ? raw.slice(0, -4) : (raw || API_ORIGIN);
-}
 
 export default function Register() {
   const { register } = useAuth();
@@ -20,30 +9,86 @@ export default function Register() {
   const [form, setForm] = useState({ name: '', email: '', password: '', confirmPassword: '' });
   const [error, setError] = useState('');
 
-  const submit = async (e) => {
-    e.preventDefault();
+  const submit = async (event) => {
+    event.preventDefault();
     setError('');
     try {
       await register(form);
       navigate('/profile');
     } catch (err) {
-      setError(err.response?.data?.message || 'Registration failed');
+      setError(err.response?.data?.message || "We couldn't create your account. Please try again.");
     }
   };
 
   return (
-    <AuthLayout title="Create account" subtitle="Start your journey with us">
-      <form onSubmit={submit} className="space-y-3">
-        <input className="input" placeholder="Name" value={form.name} onChange={e=>setForm({...form,name:e.target.value})} />
-        <input className="input" placeholder="Email" value={form.email} onChange={e=>setForm({...form,email:e.target.value})} />
-        <input type="password" className="input" placeholder="Password" value={form.password} onChange={e=>setForm({...form,password:e.target.value})} />
-        <input type="password" className="input" placeholder="Confirm password" value={form.confirmPassword} onChange={e=>setForm({...form,confirmPassword:e.target.value})} />
-        {error && <div className="text-red-400 text-sm">{error}</div>}
-        <button className="btn w-full py-3" type="submit">Register</button>
+    <AuthLayout title="Create account" subtitle="Join the workspace and access your projects.">
+      <form onSubmit={submit} className="space-y-4">
+        <div className="space-y-1">
+          <label className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-500" htmlFor="register-name">
+            Name
+          </label>
+          <input
+            id="register-name"
+            className="input"
+            placeholder="Your name"
+            value={form.name}
+            onChange={(event) => setForm((current) => ({ ...current, name: event.target.value }))}
+          />
+        </div>
+        <div className="space-y-1">
+          <label className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-500" htmlFor="register-email">
+            Email
+          </label>
+          <input
+            id="register-email"
+            className="input"
+            placeholder="you@company.com"
+            value={form.email}
+            onChange={(event) => setForm((current) => ({ ...current, email: event.target.value }))}
+          />
+        </div>
+        <div className="space-y-1">
+          <label className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-500" htmlFor="register-password">
+            Password
+          </label>
+          <input
+            id="register-password"
+            type="password"
+            className="input"
+            placeholder="Create a strong password"
+            value={form.password}
+            onChange={(event) => setForm((current) => ({ ...current, password: event.target.value }))}
+          />
+        </div>
+        <div className="space-y-1">
+          <label className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-500" htmlFor="register-confirm">
+            Confirm password
+          </label>
+          <input
+            id="register-confirm"
+            type="password"
+            className="input"
+            placeholder="Repeat password"
+            value={form.confirmPassword}
+            onChange={(event) => setForm((current) => ({ ...current, confirmPassword: event.target.value }))}
+          />
+        </div>
+        {error && (
+          <div className="rounded-2xl border border-rose-100 bg-rose-50 px-4 py-2 text-sm text-rose-600">
+            {error}
+          </div>
+        )}
+        <button className="btn w-full justify-center py-3" type="submit">
+          Create account
+        </button>
       </form>
-      <div className="mt-4 text-sm flex items-center justify-between text-slate-300">
-        <a className="text-brand" href="/forgot-password">Forgot password?</a>
-        <a className="text-brand" href="/login">Sign in</a>
+      <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-[0.25em] text-slate-400">
+        <Link to="/forgot-password" className="text-brand hover:underline">
+          Forgot password
+        </Link>
+        <Link to="/login" className="text-brand hover:underline">
+          Already have an account
+        </Link>
       </div>
     </AuthLayout>
   );

@@ -1,40 +1,122 @@
 import React, { useEffect, useState } from 'react';
 import api from '../lib/axios.js';
 
-export default function Clients(){
+const EMPTY = { name: '', website: '', logoUrl: '', testimonial: '' };
+
+export default function Clients() {
   const [list, setList] = useState([]);
-  const [form, setForm] = useState({ name:'', website:'', logoUrl:'', testimonial:'' });
+  const [form, setForm] = useState(EMPTY);
+  const [loading, setLoading] = useState(false);
 
-  const load = async ()=>{ const {data} = await api.get('/content/clients'); setList(data.clients||[]); };
-  useEffect(()=>{load();},[]);
+  const load = async () => {
+    try {
+      const { data } = await api.get('/content/clients');
+      setList(data.clients || []);
+    } catch {
+      setList([]);
+    }
+  };
 
-  const add = async (e)=>{ e.preventDefault(); await api.post('/content/clients', form); setForm({ name:'', website:'', logoUrl:'', testimonial:'' }); load(); };
-  const del = async (id)=>{ await api.delete(`/content/clients/${id}`); load(); };
+  useEffect(() => {
+    load();
+  }, []);
+
+  const add = async (event) => {
+    event.preventDefault();
+    setLoading(true);
+    try {
+      await api.post('/content/clients', form);
+      setForm(EMPTY);
+      await load();
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const del = async (id) => {
+    setLoading(true);
+    try {
+      await api.delete(`/content/clients/${id}`);
+      await load();
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
-    <div className="space-y-4">
-      <div className="text-2xl font-bold">Happy Clients</div>
-      <form onSubmit={add} className="card space-y-2">
-        <div className="font-semibold">Add Client</div>
-        <input className="input" placeholder="Name" value={form.name} onChange={e=>setForm({...form,name:e.target.value})} />
-        <input className="input" placeholder="Website" value={form.website} onChange={e=>setForm({...form,website:e.target.value})} />
-        <input className="input" placeholder="Logo URL" value={form.logoUrl} onChange={e=>setForm({...form,logoUrl:e.target.value})} />
-        <textarea className="input" placeholder="Testimonial" value={form.testimonial} onChange={e=>setForm({...form,testimonial:e.target.value})} />
-        <button className="btn w-full" type="submit">Create</button>
+    <div className="space-y-8">
+      <header className="app-glow overflow-hidden rounded-[32px] border border-white/60 bg-white/90 p-6 shadow-soft md:p-8">
+        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-brand">Showcase</p>
+        <h1 className="mt-2 text-3xl font-bold tracking-tight text-slate-900">Clients</h1>
+        <p className="mt-2 text-sm text-slate-500">
+          Keep the public case studies up to date with the brands you are helping. Testimonials appear on the client
+          spotlight page instantly.
+        </p>
+      </header>
+
+      <form onSubmit={add} className="card space-y-4 border-white/55 bg-white/90">
+        <div className="text-sm font-semibold uppercase tracking-[0.3em] text-slate-500">Add client</div>
+        <div className="grid gap-4 md:grid-cols-2">
+          <input
+            className="input"
+            placeholder="Client name"
+            value={form.name}
+            onChange={(event) => setForm((current) => ({ ...current, name: event.target.value }))}
+          />
+          <input
+            className="input"
+            placeholder="Website (https://...)"
+            value={form.website}
+            onChange={(event) => setForm((current) => ({ ...current, website: event.target.value }))}
+          />
+        </div>
+        <input
+          className="input"
+          placeholder="Logo URL (optional)"
+          value={form.logoUrl}
+          onChange={(event) => setForm((current) => ({ ...current, logoUrl: event.target.value }))}
+        />
+        <textarea
+          className="textarea"
+          rows={4}
+          placeholder="Testimonial or highlight"
+          value={form.testimonial}
+          onChange={(event) => setForm((current) => ({ ...current, testimonial: event.target.value }))}
+        />
+        <button className="btn w-full justify-center" type="submit" disabled={loading}>
+          {loading ? 'Saving...' : 'Publish client story'}
+        </button>
       </form>
 
-      <div className="grid md:grid-cols-2 gap-3">
-        {list.map(c=> (
-          <div key={c._id} className="card">
-            <div className="font-semibold">{c.name}</div>
-            {c.logoUrl && <img src={c.logoUrl} alt={c.name} className="h-10 my-2" />}
-            <div className="text-sm text-slate-600">{c.testimonial}</div>
-            <div className="text-xs text-slate-500">{c.website}</div>
-            <button className="btn secondary mt-2" onClick={()=>del(c._id)}>Delete</button>
-          </div>
+      <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        {list.map((client) => (
+          <article key={client._id || client.website} className="card border-white/55 bg-white/90 space-y-3">
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <div className="text-lg font-semibold text-slate-900">{client.name}</div>
+                <div className="text-xs uppercase tracking-[0.3em] text-slate-400">
+                  {client.website?.replace(/^https?:\/\//, '') || 'No website'}
+                </div>
+              </div>
+              {client.logoUrl && (
+                <img src={client.logoUrl} alt={client.name} className="h-10 w-10 rounded-lg object-cover" />
+              )}
+            </div>
+            {client.testimonial && <p className="text-sm text-slate-500">"{client.testimonial}"</p>}
+            <div className="flex items-center justify-end">
+              <button
+                type="button"
+                className="text-xs font-semibold uppercase tracking-[0.25em] text-rose-500 hover:underline"
+                onClick={() => del(client._id)}
+                disabled={loading}
+              >
+                Delete
+              </button>
+            </div>
+          </article>
         ))}
-      </div>
+        {list.length === 0 && <div className="card border-white/55 bg-white/90 text-sm text-slate-500">No clients added yet.</div>}
+      </section>
     </div>
   );
 }
-

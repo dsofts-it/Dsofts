@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Routes, Route, Link, useLocation, Navigate } from 'react-router-dom';
+import { FiMenu, FiX, FiLogIn, FiUserPlus } from 'react-icons/fi';
 import Home from './pages/Home.jsx';
 import Services from './pages/Services.jsx';
 import Clients from './pages/Clients.jsx';
@@ -23,44 +24,187 @@ import logo from './assets/dsofts-logo.jpg';
 const Layout = ({ children }) => {
   const { user, logout } = useAuth();
   const location = useLocation();
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const navLinks = [
+    { to: '/services', label: 'Services' },
+    { to: '/clients', label: 'Our Work' },
+    { to: '/project-builder', label: 'Project Planner' },
+    { to: '/about', label: 'Studio' },
+    { to: '/contact', label: 'Contact' },
+    ...(user ? [{ to: '/pay', label: 'Payments' }] : []),
+  ];
+
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [location.pathname]);
+
+  const isActive = (to) => {
+    if (to === '/') return location.pathname === '/';
+    return location.pathname === to || location.pathname.startsWith(`${to}/`);
+  };
+
+  const desktopAuth = user ? (
+    <div className="flex items-center gap-3">
+      <Link
+        to="/profile"
+        className="hidden sm:inline-flex items-center gap-2 rounded-xl border border-white/60 bg-white/80 px-3 py-2 text-sm font-semibold text-slate-700 transition hover:border-brand/50 hover:text-brand"
+      >
+        Hi, {user.name.split(' ')[0]}
+      </Link>
+      <button
+        type="button"
+        onClick={logout}
+        className="inline-flex items-center gap-2 rounded-xl border border-brand/20 bg-white/80 px-3 py-2 text-sm font-semibold text-brand transition hover:border-brand hover:bg-white"
+      >
+        Logout
+      </button>
+    </div>
+  ) : (
+    <>
+      {location.pathname !== '/login' && (
+        <Link
+          to="/login"
+          className="inline-flex items-center gap-2 rounded-xl border border-brand/20 bg-white/80 px-3 py-2 text-sm font-semibold text-brand transition hover:border-brand"
+        >
+          <FiLogIn className="hidden sm:block" />
+          Login
+        </Link>
+      )}
+      {location.pathname !== '/register' && (
+        <Link to="/register" className="btn hidden sm:inline-flex">
+          <FiUserPlus className="hidden md:block" />
+          Register
+        </Link>
+      )}
+    </>
+  );
+
+  const mobileAuth = user ? (
+    <>
+      <Link
+        to="/profile"
+        className="rounded-xl px-3 py-2 text-sm font-semibold text-slate-700 transition hover:bg-brand/10 hover:text-brand"
+      >
+        Profile
+      </Link>
+      <button
+        type="button"
+        onClick={logout}
+        className="rounded-xl px-3 py-2 text-left text-sm font-semibold text-brand hover:bg-brand/10"
+      >
+        Logout
+      </button>
+    </>
+  ) : (
+    <>
+      {location.pathname !== '/login' && (
+        <Link to="/login" className="rounded-xl px-3 py-2 text-sm font-semibold text-brand hover:bg-brand/10">
+          Login
+        </Link>
+      )}
+      {location.pathname !== '/register' && (
+        <Link to="/register" className="btn w-full justify-center">
+          Register
+        </Link>
+      )}
+    </>
+  );
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-blue-50/30 text-slate-800">
-      <nav className="sticky top-0 z-30 border-b border-slate-200/70 bg-white/80 backdrop-blur-xl">
-        <div className="max-w-[1160px] mx-auto px-6 py-3 flex items-center justify-between">
-          <div className="flex items-center gap-2 font-bold">
-            <img src={logo} alt="Dsofts IT" className="h-7" onError={(e)=>{e.currentTarget.style.display='none'}} />
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-brand to-brandLight grid place-items-center text-white font-black shadow-sm">D</div>
-            <Link to="/" className="hover:text-blue-700 transition">Dsofts IT Services</Link>
-          </div>
-          <div className="hidden md:flex items-center gap-3">
-            <Link to="/services" className="px-3 py-2 rounded-lg hover:bg-blue-50 text-slate-700 hover:text-blue-700 transition">Services</Link>
-            <Link to="/clients" className="px-3 py-2 rounded-lg hover:bg-blue-50 text-slate-700 hover:text-blue-700 transition">Happy Clients</Link>
-            <Link to="/project-builder" className="px-3 py-2 rounded-lg hover:bg-blue-50 text-slate-700 hover:text-blue-700 transition">Project Builder</Link>
-            <Link to="/about" className="px-3 py-2 rounded-lg hover:bg-blue-50 text-slate-700 hover:text-blue-700 transition">About</Link>
-            <Link to="/contact" className="px-3 py-2 rounded-lg hover:bg-blue-50 text-slate-700 hover:text-blue-700 transition">Contact</Link>
-            <Link to="/pay" className="px-3 py-2 rounded-lg hover:bg-blue-50 text-slate-700 hover:text-blue-700 transition">Pay</Link>
-            {/* Admin moved to a separate site; link removed */}
-            <ThemeToggle />
-            {user ? (
-              <>
-                <Link to="/profile" className="px-3 py-2 rounded-lg hover:bg-blue-50 transition">Hi, {user.name.split(' ')[0]}</Link>
-                <button className="px-3 py-2 rounded-lg border border-slate-200 hover:border-blue-500 transition" onClick={logout}>Logout</button>
-              </>
-            ) : (
-              <div className="flex items-center gap-2">
-                {location.pathname !== '/login' && (
-                  <Link className="px-4 py-2 rounded-xl bg-gradient-to-r from-brand to-brandLight text-white shadow-sm hover:opacity-95 transition" to="/login">Login</Link>
-                )}
-                {location.pathname !== '/register' && (
-                  <Link className="px-4 py-2 rounded-xl bg-blue-600 text-white hover:bg-blue-700 transition" to="/register">Register</Link>
-                )}
+    <div className="relative min-h-screen overflow-hidden">
+      <div className="pointer-events-none absolute inset-x-0 top-[-320px] h-[480px] bg-hero-glow opacity-90 blur-3xl" />
+      <nav className="sticky top-6 z-50">
+        <div className="mx-auto max-w-6xl px-4">
+          <div className="app-glow flex items-center gap-3 px-4 py-3 md:px-6 md:py-4">
+            <Link to="/" className="relative flex items-center transition hover:scale-[1.02]">
+              <div className="relative h-11 w-11 overflow-hidden rounded-2xl shadow-soft">
+                <img src={logo} alt="Studio logo" className="h-full w-full object-cover" />
+                <span className="absolute inset-0 rounded-2xl border border-white/50" />
               </div>
-            )}
+            </Link>
+            <div className="hidden flex-1 items-center gap-1 pl-4 md:flex">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.to}
+                  to={link.to}
+                  className={`group relative inline-flex items-center overflow-hidden rounded-xl px-3 py-2 text-sm font-semibold transition ${
+                    isActive(link.to) ? 'text-brand' : 'text-slate-600 hover:text-brand'
+                  }`}
+                >
+                  <span className="relative z-10">{link.label}</span>
+                  <span
+                    className={`absolute inset-0 rounded-xl bg-brand/10 transition-opacity duration-200 ${
+                      isActive(link.to) ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
+                    }`}
+                  />
+                </Link>
+              ))}
+            </div>
+            <div className="hidden items-center gap-2 md:flex">
+              <ThemeToggle />
+              {desktopAuth}
+            </div>
+            <button
+              type="button"
+              className="ml-auto inline-flex h-10 w-10 items-center justify-center rounded-xl border border-white/50 bg-white/70 text-slate-700 transition hover:border-brand/50 hover:text-brand md:hidden"
+              onClick={() => setMenuOpen((open) => !open)}
+              aria-label="Toggle menu"
+            >
+              {menuOpen ? <FiX /> : <FiMenu />}
+            </button>
           </div>
         </div>
+        {menuOpen && (
+          <div className="mx-auto mt-3 w-full max-w-6xl px-4 md:hidden">
+            <div className="app-glow flex flex-col gap-2 px-4 py-4">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.to}
+                  to={link.to}
+                  className={`rounded-xl px-3 py-2 text-sm font-semibold transition ${
+                    isActive(link.to) ? 'bg-brand/10 text-brand' : 'text-slate-700 hover:bg-brand/10 hover:text-brand'
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              ))}
+              <div className="my-3 h-px bg-white/60" />
+              <div className="flex flex-col gap-2">{mobileAuth}</div>
+              <div className="pt-2">
+                <ThemeToggle />
+              </div>
+            </div>
+          </div>
+        )}
       </nav>
-      <div className="max-w-[1160px] mx-auto px-6 py-6"><PageTransition>{children}</PageTransition></div>
-      <footer className="border-t border-slate-200 text-center text-slate-500 py-6">© {new Date().getFullYear()} Dsofts IT • Warje, Pune • +91 90000 00000</footer>
+      <div className="relative z-10 mx-auto w-full max-w-6xl px-4 pb-16 pt-12 md:pt-16">
+        <PageTransition>{children}</PageTransition>
+      </div>
+      <footer className="relative z-10 mx-auto mt-20 w-full max-w-6xl px-4 pb-10">
+        <div className="app-glow flex flex-col gap-6 px-6 py-6 md:flex-row md:items-center md:justify-between">
+          <div className="flex items-center gap-3">
+            <div className="relative h-10 w-10 overflow-hidden rounded-2xl shadow-soft">
+              <img src={logo} alt="Studio mark" className="h-full w-full object-cover" />
+            </div>
+            <div>
+              <div className="text-sm font-semibold text-slate-800">We design and ship digital experiences.</div>
+              <div className="text-xs text-slate-500">&copy; {new Date().getFullYear()} Studio Collective · Pune · +91 90000 00000</div>
+            </div>
+          </div>
+          <div className="flex flex-wrap gap-3 text-xs font-semibold text-slate-500">
+            <a href="mailto:hello@studiocollective.design" className="transition hover:text-brand">
+              hello@studiocollective.design
+            </a>
+            <Link to="/project-builder" className="transition hover:text-brand">
+              Project Planner
+            </Link>
+            <Link to="/contact" className="transition hover:text-brand">
+              Let&apos;s Talk
+            </Link>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 };
@@ -74,19 +218,19 @@ const Protected = ({ children }) => {
 export default function App() {
   const [bootLoading, setBootLoading] = useState(true);
   const location = useLocation();
+
   useEffect(() => {
     const t = setTimeout(() => setBootLoading(false), 800);
     return () => clearTimeout(t);
   }, []);
 
-  // Track page visits
   useEffect(() => {
     fetch((import.meta.env.VITE_API_URL || 'http://localhost:5000/api') + '/metrics/visit', {
       method: 'POST',
       credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ path: location.pathname + location.search })
-    }).catch(()=>{});
+      body: JSON.stringify({ path: location.pathname + location.search }),
+    }).catch(() => {});
   }, [location.pathname, location.search]);
 
   return (
@@ -95,30 +239,52 @@ export default function App() {
       {!bootLoading && (
         <Layout>
           <Routes>
-            {/* Public homepage */}
             <Route path="/" element={<Home />} />
-
-            {/* Make public pages freely accessible */}
             <Route path="/services" element={<Services />} />
             <Route path="/clients" element={<Clients />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/project-builder" element={<ProjectBuilder />} />
-            <Route path="/pay" element={<Protected><Payment /></Protected>} />
-            <Route path="/payment-result" element={<Protected><PaymentResult /></Protected>} />
-            <Route path="/profile" element={<Protected><Profile /></Protected>} />
-            <Route path="/payments/history" element={<Protected><PaymentsHistory /></Protected>} />
-            {/* Admin moved to separate app; route removed */}
-
-            {/* Auth routes remain open */}
+            <Route
+              path="/pay"
+              element={(
+                <Protected>
+                  <Payment />
+                </Protected>
+              )}
+            />
+            <Route
+              path="/payment-result"
+              element={(
+                <Protected>
+                  <PaymentResult />
+                </Protected>
+              )}
+            />
+            <Route
+              path="/profile"
+              element={(
+                <Protected>
+                  <Profile />
+                </Protected>
+              )}
+            />
+            <Route
+              path="/payments/history"
+              element={(
+                <Protected>
+                  <PaymentsHistory />
+                </Protected>
+              )}
+            />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password/:token" element={<ResetPassword />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </Layout>
       )}
     </AuthProvider>
   );
 }
-

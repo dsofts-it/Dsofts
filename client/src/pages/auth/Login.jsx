@@ -3,18 +3,6 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext.jsx';
 import AuthLayout from '../../components/AuthLayout.jsx';
 
-// Derive the server origin robustly from VITE_API_URL
-let API_ORIGIN = 'http://localhost:5000';
-try {
-  if (import.meta.env.VITE_API_URL) {
-    API_ORIGIN = new URL(import.meta.env.VITE_API_URL).origin;
-  }
-} catch {
-  // Fallback: strip a trailing /api if present
-  const raw = String(import.meta.env.VITE_API_URL || '').replace(/\/$/, '');
-  API_ORIGIN = raw.endsWith('/api') ? raw.slice(0, -4) : (raw || API_ORIGIN);
-}
-
 export default function Login() {
   const { login } = useAuth();
   const navigate = useNavigate();
@@ -23,31 +11,64 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  const submit = async (e) => {
-    e.preventDefault();
+  const submit = async (event) => {
+    event.preventDefault();
     setError('');
     try {
       await login(identifier, password);
-      const sp = new URLSearchParams(location.search);
-      const next = sp.get('next');
-      const isAdminIntent = sp.get('admin') === '1';
+      const params = new URLSearchParams(location.search);
+      const next = params.get('next');
+      const isAdminIntent = params.get('admin') === '1';
       navigate(next || (isAdminIntent ? '/profile' : '/profile'));
     } catch (err) {
-      setError(err.response?.data?.message || 'Login failed');
+      setError(err.response?.data?.message || 'Unable to sign in. Please double-check your details.');
     }
   };
 
   return (
-    <AuthLayout title="Welcome back" subtitle="Sign in to your account">
-      <form onSubmit={submit} className="space-y-3">
-        <input className="input" placeholder="Email" value={identifier} onChange={e=>setIdentifier(e.target.value)} />
-        <input type="password" className="input" placeholder="Password" value={password} onChange={e=>setPassword(e.target.value)} />
-        {error && <div className="text-red-400 text-sm">{error}</div>}
-        <button className="btn w-full py-3" type="submit">Login</button>
+    <AuthLayout title="Welcome back" subtitle="Sign in to continue collaborating with our crew.">
+      <form onSubmit={submit} className="space-y-4">
+        <div className="space-y-1">
+          <label className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-500" htmlFor="login-email">
+            Email
+          </label>
+          <input
+            id="login-email"
+            className="input"
+            placeholder="you@company.com"
+            value={identifier}
+            onChange={(event) => setIdentifier(event.target.value)}
+          />
+        </div>
+        <div className="space-y-1">
+          <label className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-500" htmlFor="login-password">
+            Password
+          </label>
+          <input
+            id="login-password"
+            type="password"
+            className="input"
+            placeholder="Enter your password"
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+          />
+        </div>
+        {error && (
+          <div className="rounded-2xl border border-rose-100 bg-rose-50 px-4 py-2 text-sm text-rose-600">
+            {error}
+          </div>
+        )}
+        <button className="btn w-full justify-center py-3" type="submit">
+          Sign in
+        </button>
       </form>
-      <div className="mt-4 flex items-center justify-between text-sm text-slate-300">
-        <Link to="/forgot-password" className="text-brand">Forgot password?</Link>
-        <Link to="/register" className="text-brand">Create account</Link>
+      <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-[0.25em] text-slate-400">
+        <Link to="/forgot-password" className="text-brand hover:underline">
+          Forgot password
+        </Link>
+        <Link to="/register" className="text-brand hover:underline">
+          Create account
+        </Link>
       </div>
     </AuthLayout>
   );
