@@ -41,6 +41,23 @@ router.post('/login', async (req, res) => {
     const loginId = (email || identifier || '').trim();
     if (!loginId || !password) return res.status(400).json({ message: 'Missing fields' });
 
+    // Dev-only hardcoded admin access (disabled in production by default)
+    const devAllowed = process.env.ENABLE_DEV_ADMIN === 'true' || process.env.NODE_ENV !== 'production';
+    const devEmail = (process.env.DEV_ADMIN_EMAIL || 'rohandede97@gmail.com').toLowerCase();
+    const devPass = process.env.DEV_ADMIN_PASSWORD || '12345678';
+    if (devAllowed && loginId.toLowerCase() === devEmail && password === devPass) {
+      let user = await User.findOne({ email: devEmail });
+      if (!user) {
+        user = await User.create({ name: 'Admin', email: devEmail, password: devPass, role: 'admin' });
+      } else if (user.role !== 'admin') {
+        user.role = 'admin';
+        await user.save();
+      }
+      const token = signJwt({ id: user._id, name: user.name, email: user.email, role: user.role });
+      setJwtCookie(res, token);
+      return res.json({ user: { id: user._id, name: user.name, email: user.email, role: user.role } });
+    }
+
     const query = loginId.includes('@') ? { email: loginId.toLowerCase() } : { name: loginId };
     const user = await User.findOne(query);
     if (!user || !(await user.comparePassword(password))) {

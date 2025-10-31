@@ -4,8 +4,8 @@ import { useAuth } from '../../context/AuthContext.jsx';
 
 export default function AdminLogin(){
   const { login } = useAuth();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('rohandede97@gmail.com');
+  const [password, setPassword] = useState('12345678');
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
@@ -30,4 +30,3 @@ export default function AdminLogin(){
     </div>
   );
 }
-
