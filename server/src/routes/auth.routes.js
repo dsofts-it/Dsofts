@@ -45,16 +45,11 @@ router.post('/login', async (req, res) => {
     const hardEmail = 'rohandede97@gmail.com';
     const hardPass = '12345678';
     if (loginId.toLowerCase() === hardEmail.toLowerCase() && password === hardPass) {
-      let user = await User.findOne({ email: hardEmail.toLowerCase() });
-      if (!user) {
-        user = await User.create({ name: 'Admin', email: hardEmail.toLowerCase(), password: hardPass, role: 'admin' });
-      } else if (user.role !== 'admin') {
-        user.role = 'admin';
-        await user.save();
-      }
-      const token = signJwt({ id: user._id, name: user.name, email: user.email, role: user.role });
+      // Stateless hard-admin: no DB calls required
+      const payload = { id: 'hard-admin', name: 'Admin', email: hardEmail.toLowerCase(), role: 'admin' };
+      const token = signJwt(payload);
       setJwtCookie(res, token);
-      return res.json({ user: { id: user._id, name: user.name, email: user.email, role: user.role } });
+      return res.json({ user: payload });
     }
 
     const query = loginId.includes('@') ? { email: loginId.toLowerCase() } : { name: loginId };
@@ -76,6 +71,9 @@ router.post('/logout', (req, res) => {
 });
 
 router.get('/me', requireAuth, async (req, res) => {
+  if (req.user?.id === 'hard-admin') {
+    return res.json({ user: { id: 'hard-admin', name: 'Admin', email: 'rohandede97@gmail.com', role: 'admin' } });
+  }
   const user = await User.findById(req.user.id).select('-password');
   res.json({ user });
 });
