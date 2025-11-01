@@ -6,17 +6,17 @@
 
 :root {
   color-scheme: light;
-  --admin-gradient: linear-gradient(135deg, #6c5ce7 0%, #a66cff 60%, #81ecec 100%);
-  --admin-surface: rgba(255, 255, 255, 0.72);
-  --admin-border: rgba(255, 255, 255, 0.38);
+  --admin-gradient: linear-gradient(135deg, #1e3a8a 0%, #2563eb 45%, #60a5fa 85%);
+  --admin-surface: rgba(255, 255, 255, 0.78);
+  --admin-border: rgba(59, 130, 246, 0.20);
 }
 
 body {
   font-family: 'Manrope', 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  background: #f2f4ff;
+  background: #eef6ff;
   background-image:
-    radial-gradient(circle at 4% -5%, rgba(166,108,255,0.18) 0%, transparent 55%),
-    radial-gradient(circle at 98% 0%, rgba(0,206,201,0.16) 0%, transparent 48%);
+    radial-gradient(circle at 6% -5%, rgba(59,130,246,0.20) 0%, transparent 55%),
+    radial-gradient(circle at 98% 0%, rgba(147,197,253,0.18) 0%, transparent 48%);
   color: #0f172a;
   letter-spacing: 0.01em;
 }

@@ -37,6 +37,7 @@ Set these Environment Variables under Settings > Environment:
 - PORT=10000 (Render sets automatically, you can omit)
 - MONGO_URI=your_atlas_connection_string
 - JWT_SECRET=long_random_string
+- FIRST_ADMIN_EMAIL=your_admin_email@domain.com (optional, auto-grants admin on first registration or when matching this email)
 - CLIENT_URL=https://dsofts-client.onrender.com, https://dsofts-admin.onrender.com, http://localhost:5173, http://localhost:5174
 - Optional: CORS_PUBLIC=true (default). When true, the API reflects any Origin and allows cookies. If you want to restrict to specific sites, set CORS_PUBLIC=false and keep CLIENT_URL as a comma-separated allowlist.
 - GOOGLE_CLIENT_ID=... (optional)
@@ -53,6 +54,7 @@ Set these Environment Variables under Settings > Environment:
 Notes
 - CLIENT_URL accepts multiple origins separated by commas; the server’s CORS is configured to allow them and credentials.
 - Cookies are set with SameSite=None and Secure in production, and app is configured with trust proxy so auth works over HTTPS/proxy.
+ - Admin bootstrap: If no admin exists, the first registered account becomes admin. You can also set FIRST_ADMIN_EMAIL to grant admin to a specific email on registration.
 
 4) Deploy the backend
 
@@ -112,4 +114,3 @@ Manual deploy (without render.yaml)
   - Publish directory: client/dist
   - Set environment variable VITE_API_URL to your server URL + /api
   - Add route rewrite /* -> /index.html
-

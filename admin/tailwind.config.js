@@ -4,23 +4,23 @@ export default {
   theme: {
     extend: {
       colors: {
-        brand: '#6c5ce7',
-        brandLight: '#a66cff',
-        brandDark: '#1b1a2e',
-        accent: '#00cec9',
-        accentLight: '#81ecec',
-        surface: '#0a0f1f'
+        brand: '#2563eb',
+        brandLight: '#60a5fa',
+        brandDark: '#1e3a8a',
+        accent: '#3b82f6',
+        accentLight: '#93c5fd',
+        surface: '#0b1220'
       },
       fontFamily: {
         display: ['Outfit', 'Poppins', 'sans-serif'],
         body: ['Manrope', 'Inter', 'system-ui', 'sans-serif']
       },
       backgroundImage: {
-        'hero-glow': 'radial-gradient(circle at top, rgba(166,108,255,0.28), transparent 55%), radial-gradient(circle at 20% 80%, rgba(0,206,201,0.18), transparent 60%)'
+        'hero-glow': 'radial-gradient(circle at top, rgba(37,99,235,0.28), transparent 55%), radial-gradient(circle at 20% 80%, rgba(147,197,253,0.18), transparent 60%)'
       },
       boxShadow: {
-        soft: '0 18px 40px rgba(76, 92, 239, 0.18)',
-        glow: '0 16px 36px rgba(0, 206, 201, 0.18)'
+        soft: '0 18px 40px rgba(37, 99, 235, 0.18)',
+        glow: '0 16px 36px rgba(59, 130, 246, 0.18)'
       },
       keyframes: {
         'float-slow': {

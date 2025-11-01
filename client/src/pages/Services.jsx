@@ -74,7 +74,7 @@ export default function Services() {
                   <h2 className="text-lg font-semibold text-slate-900">{service.title}</h2>
                   {typeof service.priceFrom === 'number' && (
                     <span className="inline-flex items-center rounded-full border border-brand/30 bg-brand/10 px-3 py-1 text-[0.7rem] font-semibold text-brand">
-                      From ₹{Number(service.priceFrom).toLocaleString()}
+                      From ₹ {Number(service.priceFrom).toLocaleString()}
                     </span>
                   )}
                 </div>
@@ -98,3 +98,4 @@ export default function Services() {
     </PageTransition>
   );
 }
+
