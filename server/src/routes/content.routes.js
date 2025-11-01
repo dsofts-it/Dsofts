@@ -22,7 +22,19 @@ router.get('/services', async (_req, res) => {
 
 // Admin manage services
 router.post('/services', requireAdmin, async (req, res) => {
-  const s = await Service.create(req.body);
+  const body = req.body || {};
+  // Auto-generate a unique key if not provided
+  let key = body.key;
+  if (!key) {
+    const base = String(body.title || 'service')
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)+/g, '');
+    const rand = Math.random().toString(36).slice(2, 6);
+    key = base ? `${base}-${rand}` : `svc-${rand}`;
+  }
+  const payload = { ...body, key };
+  const s = await Service.create(payload);
   res.status(201).json({ service: s });
 });
 router.put('/services/:id', requireAdmin, async (req, res) => {

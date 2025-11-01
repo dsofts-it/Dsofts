@@ -4,7 +4,7 @@ import '../config/passport.js';
 import User from '../models/User.js';
 import PasswordResetToken from '../models/PasswordResetToken.js';
 import { signJwt, generateRandomToken } from '../utils/tokens.js';
-import { setJwtCookie, requireAuth } from '../middleware/auth.js';
+import { setJwtCookie, clearJwtCookie, requireAuth } from '../middleware/auth.js';
 import { sendResetEmail } from '../utils/email.js';
 
 const router = express.Router();
@@ -66,7 +66,7 @@ router.post('/login', async (req, res) => {
 });
 
 router.post('/logout', (req, res) => {
-  res.clearCookie('jwt');
+  clearJwtCookie(res);
   res.json({ message: 'Logged out' });
 });
 

@@ -9,6 +9,8 @@ services:
     envVars:
       - key: NODE_ENV
         value: production
+      - key: CORS_PUBLIC
+        value: true
       # Set these in Render Dashboard after creating your DB and OAuth keys
       - key: MONGO_URI
         sync: false
@@ -62,4 +64,3 @@ services:
     envVars:
       - key: VITE_API_URL
         sync: false
-

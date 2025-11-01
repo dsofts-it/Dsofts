@@ -8,14 +8,7 @@ import {
   FiLayers,
   FiAirplay,
 } from 'react-icons/fi';
-import {
-  SiFlutter,
-  SiNodedotjs,
-  SiReact,
-  SiNextdotjs,
-  SiPostgresql,
-  SiAmazonaws,
-} from 'react-icons/si';
+import { SiFlutter, SiNodedotjs, SiReact, SiNextdotjs, SiPostgresql, SiAmazonaws } from 'react-icons/si';
 import PageTransition from '../components/PageTransition.jsx';
 
 const metrics = [
@@ -242,13 +235,20 @@ export default function Home() {
             </Link>
           </div>
           <div className="flex flex-wrap items-center gap-6 text-slate-500">
-            {[SiFlutter, SiReact, SiNextdotjs, SiNodedotjs, SiPostgresql, SiAmazonaws].map((Icon, i) => (
+            {[
+              { Icon: SiFlutter, name: 'Flutter' },
+              { Icon: SiReact, name: 'React' },
+              { Icon: SiNextdotjs, name: 'Next.js' },
+              { Icon: SiNodedotjs, name: 'Node.js' },
+              { Icon: SiPostgresql, name: 'PostgreSQL' },
+              { Icon: SiAmazonaws, name: 'AWS' },
+            ].map(({ Icon, name }) => (
               <div
-                key={Icon.displayName || Icon.name || i}
+                key={name}
                 className="inline-flex items-center gap-2 rounded-2xl border border-white/60 bg-white/80 px-4 py-2 text-sm font-semibold text-slate-600"
               >
                 <Icon className="text-2xl text-brand" />
-                <span>{Icon.name.replace('Si', '')}</span>
+                <span>{name}</span>
               </div>
             ))}
           </div>

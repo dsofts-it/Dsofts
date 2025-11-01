@@ -94,8 +94,8 @@ export default function Contact() {
           <aside className="app-glow space-y-5 rounded-[32px] border border-white/60 bg-white/90 p-6 shadow-soft">
             <div>
               <div className="text-xs font-semibold uppercase tracking-[0.3em] text-brand">Direct line</div>
-              <div className="mt-2 text-sm font-semibold text-slate-900">hello@studiocollective.design</div>
-              <div className="text-sm text-slate-500">+91 90000 00000</div>
+              <div className="mt-2 text-sm font-semibold text-slate-900">dsoft.itservies.gmail.com</div>
+              <div className="text-sm text-slate-500">WhatsApp/Cell: +91 8446031622</div>
             </div>
             <div className="rounded-2xl border border-white/60 bg-white/80 p-4 text-sm text-slate-500">
               Prefer WhatsApp? Drop your number and we&apos;ll send over a quick intro and availability.

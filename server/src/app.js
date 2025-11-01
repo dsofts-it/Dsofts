@@ -30,20 +30,24 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.set('trust proxy', 1);
 app.use(passport.initialize());
-app.use(
-  cors({
-    origin: PUBLIC_CORS
-      ? true // reflect request origin in Access-Control-Allow-Origin
-      : (origin, callback) => {
-          if (!origin) return callback(null, true);
-          if (ALLOWED_ORIGINS.includes(origin)) return callback(null, true);
-          const isLocalhost = /^(https?:\/\/)?(localhost|127\.0\.0\.1)(:\\d+)?$/i.test(origin);
-          if (isLocalhost) return callback(null, true);
-          return callback(new Error('Not allowed by CORS: ' + origin));
-        },
-    credentials: true,
-  })
-);
+const corsOptions = {
+  origin: PUBLIC_CORS
+    ? true // reflect request origin in Access-Control-Allow-Origin
+    : (origin, callback) => {
+        if (!origin) return callback(null, true);
+        if (ALLOWED_ORIGINS.includes(origin)) return callback(null, true);
+        const isLocalhost = /^(https?:\/\/)?(localhost|127\.0\.0\.1)(:\\d+)?$/i.test(origin);
+        if (isLocalhost) return callback(null, true);
+        return callback(new Error('Not allowed by CORS: ' + origin));
+      },
+  credentials: true,
+  methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+  optionsSuccessStatus: 200,
+};
+
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
 
 const limiter = rateLimit({ windowMs: 60 * 1000, max: 200 });
 app.use(limiter);

@@ -117,10 +117,14 @@ const Layout = ({ children }) => {
       <nav className="sticky top-6 z-50">
         <div className="mx-auto max-w-6xl px-4">
           <div className="app-glow flex items-center gap-3 px-4 py-3 md:px-6 md:py-4">
-            <Link to="/" className="relative flex items-center transition hover:scale-[1.02]">
+            <Link to="/" className="relative flex items-center gap-3 transition hover:scale-[1.02]">
               <div className="relative h-11 w-11 overflow-hidden rounded-2xl shadow-soft">
-                <img src={logo} alt="Studio logo" className="h-full w-full object-cover" />
+                <img src={logo} alt="Dsofts logo" className="h-full w-full object-cover" />
                 <span className="absolute inset-0 rounded-2xl border border-white/50" />
+              </div>
+              <div className="hidden sm:block">
+                <div className="text-sm font-extrabold tracking-wide text-slate-900">Dsofts IT Services</div>
+                <div className="text-[10px] font-semibold uppercase tracking-[0.3em] text-brand">Build • Launch • Grow</div>
               </div>
             </Link>
             <div className="hidden flex-1 items-center gap-1 pl-4 md:flex">
@@ -185,7 +189,7 @@ const Layout = ({ children }) => {
         <div className="app-glow flex flex-col gap-6 px-6 py-6 md:flex-row md:items-center md:justify-between">
           <div className="flex items-center gap-3">
             <div className="relative h-10 w-10 overflow-hidden rounded-2xl shadow-soft">
-              <img src={logo} alt="Studio mark" className="h-full w-full object-cover" />
+              <img src={logo} alt="Dsofts mark" className="h-full w-full object-cover" />
             </div>
             <div>
               <div className="text-sm font-semibold text-slate-800">We design and ship digital experiences.</div>
@@ -193,15 +197,10 @@ const Layout = ({ children }) => {
             </div>
           </div>
           <div className="flex flex-wrap gap-3 text-xs font-semibold text-slate-500">
-            <a href="mailto:hello@studiocollective.design" className="transition hover:text-brand">
-              hello@studiocollective.design
-            </a>
-            <Link to="/project-builder" className="transition hover:text-brand">
-              Project Planner
-            </Link>
-            <Link to="/contact" className="transition hover:text-brand">
-              Let&apos;s Talk
-            </Link>
+            <a href="mailto:dsoft.itservies.gmail.com" className="transition hover:text-brand">dsoft.itservies.gmail.com</a>
+            <a href="https://wa.me/918446031622" target="_blank" rel="noreferrer" className="transition hover:text-brand">WhatsApp</a>
+            <a href="tel:+918446031622" className="transition hover:text-brand">Call Us</a>
+            <Link to="/project-builder" className="transition hover:text-brand">Project Planner</Link>
           </div>
         </div>
       </footer>

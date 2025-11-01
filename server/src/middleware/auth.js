@@ -31,6 +31,15 @@ export const setJwtCookie = (res, token) => {
   });
 };
 
+export const clearJwtCookie = (res) => {
+  const isProd = process.env.NODE_ENV === 'production';
+  res.clearCookie('jwt', {
+    httpOnly: true,
+    sameSite: isProd ? 'none' : 'lax',
+    secure: isProd,
+  });
+};
+
 export const requireAdmin = (req, res, next) => {
   try {
     const token = req.cookies?.jwt;
